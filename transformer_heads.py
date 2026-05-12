@@ -9,7 +9,10 @@ class FeedForward(torch.nn.Module):
         self.net = torch.nn.Sequential(
                     torch.nn.Linear(n_embed, 2*n_embed), 
                     torch.nn.ReLU(),
-                    torch.nn.Linear(2*n_embed, n_embed))
+                    torch.nn.Linear(2*n_embed, 2*n_embed),
+                    torch.nn.ReLU(),
+                    torch.nn.Linear(2*n_embed, n_embed)
+                    )
         
         self.dropout = torch.nn.Dropout(p=0.1)
 
@@ -29,7 +32,7 @@ class SingleHead(torch.nn.Module):
 
         self.key = torch.nn.Linear(n_embed_input, n_embed_out, bias=False)
         self.query = torch.nn.Linear(n_embed_input, n_embed_out, bias=False)
-        self.value = torch.nn.Linear(n_embed_input, e_embed_out, bias=False)
+        self.value = torch.nn.Linear(n_embed_input, n_embed_out, bias=False)
         self.layer_norm = torch.nn.LayerNorm(n_embed_out)
 
         self.t = t 
