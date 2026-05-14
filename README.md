@@ -4,3 +4,7 @@ Implementation for paper: Decision Transformer: Reinforcement Learning via Seque
 ### Tranformer Arch
 1. Single Head with Embedding Size 128
 2. FeedForward Head with 3 Layers.
+
+### Experiments
+1. Hopper Medium from D4RL Averaged over three random seeds.
+![Hopper Medium](imgs/hp_medium_dt.png)
