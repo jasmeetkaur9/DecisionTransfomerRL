@@ -70,3 +70,27 @@ class DecisionTransformer(torch.nn.Module):
 
         return output, state_preds, action_preds, return_preds
 
+
+    def learn(self):
+
+        s, a, r, sn, an, rn = self.dg.get_dataset()
+
+        s = s.to(self.device)
+        a = a.to(self.device)
+        r = r.to(self.device)
+        sn = sn.to(self.device)
+        an = an.to(self.device)
+        rn = rn.to(self.device)
+
+        _, _, action_preds, _ = self(s, a, r, self.horizon_length)
+
+        loss_fn = torch.nn.MSELoss()
+
+        action_actual = an[:, -1, :]
+        action_pred = action_preds[:, -1, :]
+
+        output = loss_fn(action_actual, action_pred)
+        self.optimizer.zero_grad()
+        output.backward()
+        self.optimizer.step()
+
