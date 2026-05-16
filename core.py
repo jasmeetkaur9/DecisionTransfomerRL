@@ -94,3 +94,38 @@ class DecisionTransformer(torch.nn.Module):
         output.backward()
         self.optimizer.step()
 
+    def eval(self, env_name, n_ep, target_return, seed):
+
+        env = gym.make(env_name)
+        rl = [] 
+
+        for ep in range(0, n_ep):
+
+            obs, _ = env.reset(seed = seed)
+            action = env.action_space.sample()
+            next_obs, reward_ep, _, _, _ = env.step(action)
+            states = torch.tensor(obs, device = self.device, dtype = torch.float64).unsqueeze(0).repeat(self.horizon_length, 1).unsqueeze(0)
+            actions = torch.tensor(action, device = self.device, dtype = torch.float64).unsqueeze(0).repeat(self.horizon_length, 1).unsqueeze(0)
+            returns = torch.tensor(target_return, device = self.device, dtype = torch.float64).unsqueeze(0).repeat(self.horizon_length, 1).unsqueeze(0)
+            return_ = target_return 
+            steps = 0 
+            while steps < 1000:
+
+                _, _, action_preds, _ = self(states, actions, returns, self.horizon_length)
+                action = action_preds[:, -1, :].squeeze(0).detach().cpu().numpy()
+                next_obs, reward, _, _, _ = env.step(action)
+                return_ = return_ - reward
+
+                states = (torch.cat([states.squeeze(0), torch.tensor(next_obs, device=self.device, dtype=torch.float64).unsqueeze(0)], dim=0)[1:,:]).unsqueeze(0)
+                actions = (torch.cat([actions.squeeze(0), torch.tensor(action, device=self.device, dtype=torch.float64).unsqueeze(0)], dim=0)[1:,:]).unsqueeze(0)
+                returns = (torch.cat([returns.squeeze(0), torch.tensor(return_, device=self.device, dtype=torch.float64).unsqueeze(0).unsqueeze(0)], dim=0)[1:,:]).unsqueeze(0)
+
+                reward_ep = reward_ep + reward 
+                steps+=1
+            
+            rl.append(reward_ep)
+
+        return np.mean(rl)
+
+
+
