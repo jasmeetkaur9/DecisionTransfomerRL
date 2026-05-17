@@ -30,6 +30,7 @@ class DecisionTransformer(torch.nn.Module):
         self.reward_embedding = torch.nn.Linear(1, self.n_embed).to(self.device)
 
         self.pos_embedding = torch.nn.Embedding(self.horizon_length, self.n_embed).to(self.device)
+        self.timestep_embedding = torch.nn.Emdedding(*self.horizon_length, self.n_embed).to(self.device)
         self.embed_ln = torch.nn.LayerNorm(self.n_embed).to(self.device)
 
         self.predict_state = torch.nn.Linear(self.n_embed, state_n).to(self.device)
@@ -59,6 +60,11 @@ class DecisionTransformer(torch.nn.Module):
         stack_input = torch.stack([state_em, action_em, reward_em], dim=2)
         stack_input = stack_input.reshape(batch_size,3*horizon_length,n_embed)
 
+        t_tensor = torch.arange(0, horizon_length, device=self.device).unsqueeze(1)
+        t_tensor = t_tensor.repeat(1, 3).reshape(3*horizon_length)
+        time_em = self.timestep_embedding(t_tensor)
+
+        stack_input = stack_input + time_em 
         output = self.attn_head(stack_input)
         output = self.ffn(output)
 
