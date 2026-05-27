@@ -7,13 +7,14 @@ Implementation for paper: Decision Transformer: Reinforcement Learning via Seque
 
 ### Experiments
 
+Mujoco Tasks:
+![Hopper Task](imgs/hopper.png) ![Ant Task](imgs/ant.png) ![HalfCheetah Task](imgs/hc.png)
+
 1. Hopper Medium from D4RL Averaged over three random seeds.
-<img src="(imgs/hopper.png)" width="45%">
-<img src="(imgs/plot_hp_dt.png)" width="45%">
- ![Hopper Task](imgs/hopper.png) ![Hopper Medium](imgs/plot_hp_dt.png) 
+![Hopper Medium](imgs/plot_hp_dt.png) 
 
 2. Ant Medium from D4RL Averaged over three random seeds.
- ![Ant Task](imgs/ant.png) ![Ant Medium](imgs/plot_ant_dt.png) 
+![Ant Medium](imgs/plot_ant_dt.png) 
 
 3. Half-Cheetah Medium from D4RL Averaged over three random seeds.
- ![HalfCheetah Task](imgs/hc.png) ![HalfCheetah Medium](imgs/plot_hc_dt.png) 
+![HalfCheetah Medium](imgs/plot_hc_dt.png) 
