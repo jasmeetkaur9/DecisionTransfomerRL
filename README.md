@@ -8,6 +8,8 @@ Implementation for paper: Decision Transformer: Reinforcement Learning via Seque
 ### Experiments
 
 1. Hopper Medium from D4RL Averaged over three random seeds.
+<img src="(imgs/hopper.png)" width="45%">
+<img src="(imgs/plot_hp_dt.png)" width="45%">
  ![Hopper Task](imgs/hopper.png) ![Hopper Medium](imgs/plot_hp_dt.png) 
 
 2. Ant Medium from D4RL Averaged over three random seeds.
