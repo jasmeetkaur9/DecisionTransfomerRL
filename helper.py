@@ -1,6 +1,6 @@
 from PIL import Image
 
-target_size = (250, 250)  # width, height
+target_size = (200, 200)  # width, height
 
 for i, path in enumerate(["imgs/ant.png", "imgs/hc.png", "imgs/hopper.png"]):
     img = Image.open(path)
